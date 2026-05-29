@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab Adaptation — Diagnostic & Monitoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a0a;
+  --black2: #111111;
+  --black3: #181818;
+  --rose: #C8185A;
+  --rose-light: #E01F68;
+  --rose-dim: rgba(200,24,90,0.15);
+  --rose-glow: rgba(200,24,90,0.25);
+  --white: #ffffff;
+  --gray: #888;
+  --gray-dim: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.08);
+  --border-rose: rgba(200,24,90,0.35);
+  --radius: 12px;
+  --radius-lg: 18px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 840px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── HEADER ── */
+.site-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 3rem; padding-bottom: 1.5rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-logo {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--black2); border: 1.5px solid var(--border-rose);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-logo svg { width: 26px; height: 26px; }
+.brand-text { line-height: 1.2; }
+.brand-title { font-size: 15px; font-weight: 600; color: var(--white); }
+.brand-sub { font-size: 11px; font-weight: 400; color: var(--rose); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.user-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gray-dim); border: 0.5px solid var(--border);
+  border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--gray);
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
+
+/* ── LOGIN ── */
+.login-wrap { max-width: 480px; margin: 2rem auto; }
+.login-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--rose-dim); border: 0.5px solid var(--border-rose);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 11px; font-weight: 600; color: var(--rose);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.login-wrap h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+.login-wrap h1 span { color: var(--rose); }
+.login-wrap > p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 2rem; }
+.login-card {
+  background: var(--black2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 2rem;
+}
+.field { margin-bottom: 1.1rem; }
+.field label { display: block; font-size: 11px; font-weight: 600; color: var(--gray); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+.field input {
+  width: 100%; padding: 12px 16px; background: var(--black3);
+  border: 0.5px solid var(--border); border-radius: var(--radius);
+  font-size: 15px; font-family: inherit; color: var(--white); outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.field input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-glow); }
+.field input::placeholder { color: #444; }
+.error-msg { color: #e05555; font-size: 13px; margin-bottom: 12px; display: none; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: all 0.15s; border: none; text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.btn-rose { background: var(--rose); color: #fff; }
+.btn-rose:hover { background: var(--rose-light); }
+.btn-rose:active { transform: scale(0.98); }
+.btn-ghost { background: transparent; color: var(--gray); border: 0.5px solid var(--border); }
+.btn-ghost:hover { background: var(--gray-dim); color: var(--white); }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── PROGRESS ── */
+.progress-section { margin-bottom: 2.5rem; }
+.progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+.progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--rose); border-radius: 2px; transition: width 0.4s ease; }
+
+/* ── HERO ── */
+.hero { margin-bottom: 2.5rem; }
+.hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.hero p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+/* ── REX CARDS ── */
+.rex-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 2.5rem; }
+.rex-card {
+  background: var(--black2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  transition: border-color 0.15s;
+}
+.rex-card.open { border-color: var(--border-rose); }
+.rex-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; cursor: pointer; user-select: none;
+}
+.rex-header:hover .rex-title { color: var(--rose); }
+.rex-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--rose-dim); border: 0.5px solid var(--border-rose);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--rose); flex-shrink: 0;
+}
+.rex-info { flex: 1; min-width: 0; }
+.rex-title { font-size: 15px; font-weight: 600; transition: color 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rex-subtitle { font-size: 12px; color: var(--gray); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rex-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.rex-count { font-size: 11px; color: var(--gray); }
+.rex-chevron { font-size: 14px; color: var(--gray); transition: transform 0.25s; }
+.rex-card.open .rex-chevron { transform: rotate(180deg); color: var(--rose); }
+.rex-body { display: none; padding: 0 20px 20px; }
+.rex-card.open .rex-body { display: block; }
+.rex-divider { height: 0.5px; background: var(--border); margin-bottom: 18px; }
+
+/* ── CRITERIA ── */
+.criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 560px) { .criteria-grid { grid-template-columns: 1fr; } }
+.criterion {
+  background: var(--black3); border: 0.5px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+  transition: border-color 0.1s;
+}
+.criterion.rated { border-color: rgba(200,24,90,0.3); }
+.criterion-name { font-size: 12px; color: var(--gray); margin-bottom: 9px; line-height: 1.4; font-weight: 500; }
+.stars { display: flex; gap: 4px; }
+.star { font-size: 20px; cursor: pointer; color: #2a2a2a; transition: color 0.1s, transform 0.1s; line-height: 1; }
+.star.active { color: var(--rose); }
+.star:hover { transform: scale(1.2); }
+
+/* ── SUBMIT SECTION ── */
+.submit-section {
+  background: var(--black2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.5rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap;
+}
+.submit-info h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.submit-info p { font-size: 12px; color: var(--gray); }
+.submit-status { font-size: 13px; color: var(--gray); margin-top: 12px; width: 100%; display: none; }
+.submit-status.visible { display: block; }
+.submit-status.success { color: #3dcb7e; }
+.submit-status.error { color: #e05555; }
+
+/* ── SUCCESS PAGE ── */
+.success-wrap { max-width: 520px; margin: 4rem auto; text-align: center; }
+.success-ring {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 2px solid var(--rose); margin: 0 auto 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.success-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.success-wrap p { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 2rem; }
+.recap-card {
+  background: var(--black2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem; text-align: left;
+}
+.recap-head {
+  background: var(--rose-dim); border-bottom: 0.5px solid var(--border-rose);
+  padding: 10px 16px; font-size: 11px; font-weight: 600; color: var(--rose);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  display: grid; grid-template-columns: 1fr auto;
+}
+.recap-row {
+  display: grid; grid-template-columns: 1fr auto auto;
+  gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid var(--border);
+  align-items: center; font-size: 13px;
+}
+.recap-row:last-child { border-bottom: none; }
+.recap-name { color: var(--white); font-weight: 500; }
+.recap-stars { color: var(--rose); letter-spacing: 1px; }
+.recap-avg { color: var(--gray); font-weight: 600; }
+
+/* ── SPINNER ── */
+.spinner {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;
+  display: inline-block; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── CONFIG NOTICE ── */
+.config-banner {
+  background: rgba(200,24,90,0.08); border: 0.5px solid var(--border-rose);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 2rem;
+  font-size: 13px; color: var(--gray); line-height: 1.6; display: none;
+}
+.config-banner.visible { display: block; }
+.config-banner strong { color: var(--rose); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ══ PAGE LOGIN ══ -->
+  <div id="page-login" class="page active">
+    <div class="site-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
+            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
+            <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
+            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
+            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
+            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
+            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
+            <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
+            <path d="M75 34 L72 28 L78 28 Z" fill="#C8185A"/>
+            <path d="M75 22 L75 18" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M81 28 L85 28" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M69 28 L65 28" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
+            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
+            <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
+            <path d="M28 20 Q15 25 20 38 Q26 34 34 28 Z" fill="#C8185A"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Lab Adaptation</div>
+          <div class="brand-sub">Diagnostic & Monitoring</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-wrap">
+      <div class="login-eyebrow">Évaluation des outils</div>
+      <h1>Donnez votre<br><span>retour d'expérience</span></h1>
+      <p>Évaluez 5 outils d'adaptation urbaine selon 15 critères. Vos réponses sont transmises directement à notre équipe.</p>
+      <div class="login-card">
+        <div class="field"><label>Prénom</label><input id="inp-prenom" type="text" placeholder="Marie" autocomplete="given-name"></div>
+        <div class="field"><label>Nom</label><input id="inp-nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
+        <div class="field"><label>Entreprise / Organisation</label><input id="inp-entreprise" type="text" placeholder="Collectivité, bureau d'études…" autocomplete="organization"></div>
+        <div class="error-msg" id="login-error">Veuillez remplir tous les champs.</div>
+        <button class="btn btn-rose btn-full" onclick="doLogin()">Commencer l'évaluation →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE REX ══ -->
+  <div id="page-rex" class="page">
+    <div class="site-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
+            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
+            <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
+            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
+            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
+            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
+            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
+            <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
+            <path d="M75 34 L72 28 L78 28 Z" fill="#C8185A"/>
+            <path d="M75 22 L75 18" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M81 28 L85 28" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M69 28 L65 28" stroke="#C8185A" stroke-width="2" stroke-linecap="round"/>
+            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
+            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
+            <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
+            <path d="M28 20 Q15 25 20 38 Q26 34 34 28 Z" fill="#C8185A"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Lab Adaptation</div>
+          <div class="brand-sub">Diagnostic & Monitoring</div>
+        </div>
+      </div>
+      <div class="user-pill"><div class="dot"></div><span id="user-label">—</span></div>
+    </div>
+
+    <div class="config-banner" id="config-banner">
+      <strong>⚙️ Configuration requise :</strong> Pour recevoir les réponses, remplacez <strong>VOTRE_URL_SUPABASE</strong> et <strong>VOTRE_CLE_ANON</strong> dans le code HTML par vos identifiants Supabase. Voir les instructions en bas de page.
+    </div>
+
+    <div class="hero">
+      <h1>Évaluation des outils</h1>
+      <p>Dépliez chaque outil et notez-le sur les 15 critères. Vous soumettrez vos évaluations en une seule fois à la fin.</p>
+    </div>
+    <div class="progress-section">
+      <div class="progress-meta">
+        <span>Progression</span>
+        <span id="prog-label">0 / 75 critères notés</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    </div>
+
+    <div class="rex-list" id="rex-list"></div>
+
+    <div class="submit-section">
+      <div class="submit-info">
+        <h3>Soumettre mes évaluations</h3>
+        <p>Vos réponses seront envoyées directement à l'équipe du Lab Adaptation.</p>
+      </div>
+      <button class="btn btn-rose" id="submit-btn" onclick="submitAll()">Envoyer mes réponses →</button>
+      <div class="submit-status" id="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE SUCCESS ══ -->
+  <div id="page-success" class="page">
+    <div class="site-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
+            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
+            <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
+            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
+            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
+            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
+            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
+            <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
+            <path d="M75 34 L72 28 L78 28 Z" fill="#C8185A"/>
+            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
+            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
+            <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Lab Adaptation</div>
+          <div class="brand-sub">Diagnostic & Monitoring</div>
+        </div>
+      </div>
+    </div>
+    <div class="success-wrap">
+      <div class="success-ring">✓</div>
+      <h1>Merci pour votre contribution !</h1>
+      <p>Vos évaluations ont bien été transmises à l'équipe du Lab Adaptation. Voici votre récapitulatif :</p>
+      <div class="recap-card">
+        <div class="recap-head"><span>Outil</span><span>Moyenne</span></div>
+        <div id="recap-rows"></div>
+      </div>
+      <button class="btn btn-ghost" onclick="showPage('page-rex')">← Modifier mes réponses</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   CONFIG SUPABASE — À PERSONNALISER
+══════════════════════════════════════ */
+const SUPABASE_URL = 'VOTRE_URL_SUPABASE';   // ex: https://xxxxxx.supabase.co
+const SUPABASE_KEY = 'VOTRE_CLE_ANON';       // clé anon publique
+const TABLE_NAME   = 'evaluations_rex';       // nom de la table à créer
+
+/* ══════════════════════════════════════
+   DONNÉES
+══════════════════════════════════════ */
+const REX_DATA = [
+  { id: 1, titre: "CSTB — PDNB",             desc: "Plan de Diagnostic National du Bâtiment · CSTB" },
+  { id: 2, titre: "CSTB — SERENE",            desc: "Outil de simulation énergétique et résilience · CSTB" },
+  { id: 3, titre: "CEREMA — Côtes d'Armor",   desc: "Outils mis en place dans le département Côtes d'Armor · CEREMA" },
+  { id: 4, titre: "Azard",                     desc: "Plateforme de gestion des aléas et risques climatiques" },
+  { id: 5, titre: "Geoya",                     desc: "Outil de géoanalyse territoriale pour l'adaptation" }
+];
+
+const CRITERES = [
+  "Niveau d'analyse",
+  "Hiérarchisation des risques, indicateurs",
+  "Livrable",
+  "Objectif : conformité, aide à la décision…",
+  "Coût",
+  "Donnée utilisée",
+  "Temps utilisé",
+  "Facilité",
+  "Fonctionnalités",
+  "Ergonomie",
+  "Profil de l'utilisateur",
+  "Suivi dans le temps",
+  "Échelle",
+  "Risques couverts",
+  "Horizon temporel"
+];
+
+let user = {};
+let votes = {};
+let supabaseConfigured = false;
+
+/* ══ INIT ══ */
+function checkConfig() {
+  supabaseConfigured = SUPABASE_URL !== 'VOTRE_URL_SUPABASE' && SUPABASE_KEY !== 'VOTRE_CLE_ANON';
+  return supabaseConfigured;
+}
+
+function initVotes() {
+  REX_DATA.forEach(r => {
+    votes[r.id] = {};
+    CRITERES.forEach(c => { votes[r.id][c] = 0; });
+  });
+}
+
+function doLogin() {
+  const p = document.getElementById('inp-prenom').value.trim();
+  const n = document.getElementById('inp-nom').value.trim();
+  const e = document.getElementById('inp-entreprise').value.trim();
+  if (!p || !n || !e) { document.getElementById('login-error').style.display = 'block'; return; }
+  document.getElementById('login-error').style.display = 'none';
+  user = { prenom: p, nom: n, entreprise: e };
+  initVotes();
+  document.getElementById('user-label').textContent = p + ' ' + n;
+  if (!checkConfig()) {
+    document.getElementById('config-banner').classList.add('visible');
+  }
+  buildRex();
+  showPage('page-rex');
+}
+
+/* ══ BUILD UI ══ */
+function buildRex() {
+  const list = document.getElementById('rex-list');
+  list.innerHTML = '';
+  REX_DATA.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'rex-card';
+    card.id = 'rex-' + r.id;
+    card.innerHTML = `
+      <div class="rex-header" onclick="toggleRex(${r.id})">
+        <div class="rex-num">${r.id}</div>
+        <div class="rex-info">
+          <div class="rex-title">${r.titre}</div>
+          <div class="rex-subtitle">${r.desc}</div>
+        </div>
+        <div class="rex-meta">
+          <span class="rex-count" id="rc-${r.id}">0/${CRITERES.length}</span>
+          <span class="rex-chevron">▼</span>
+        </div>
+      </div>
+      <div class="rex-body">
+        <div class="rex-divider"></div>
+        <div class="criteria-grid" id="cg-${r.id}"></div>
+      </div>`;
+    list.appendChild(card);
+    const grid = document.getElementById('cg-' + r.id);
+    CRITERES.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'criterion';
+      div.id = 'crit-' + r.id + '-' + slugify(c);
+      div.innerHTML = `<div class="criterion-name">${c}</div><div class="stars" id="s-${r.id}-${slugify(c)}"></div>`;
+      grid.appendChild(div);
+      renderStars(r.id, c);
+    });
+    updateCount(r.id);
+  });
+}
+
+function slugify(s) { return s.replace(/[^a-z0-9]/gi,'').toLowerCase().substring(0,14); }
+
+function renderStars(rexId, crit) {
+  const el = document.getElementById('s-' + rexId + '-' + slugify(crit));
+  if (!el) return;
+  el.innerHTML = '';
+  const val = votes[rexId][crit] || 0;
+  for (let i = 1; i <= 5; i++) {
+    const s = document.createElement('span');
+    s.className = 'star' + (i <= val ? ' active' : '');
+    s.textContent = i <= val ? '★' : '★';
+    s.style.color = i <= val ? 'var(--rose)' : '#2a2a2a';
+    s.onclick = (function(rid, cr, sc) { return () => setVote(rid, cr, sc); })(rexId, crit, i);
+    s.onmouseenter = (function(rid, cr, sc) { return () => previewStars(rid, cr, sc); })(rexId, crit, i);
+    s.onmouseleave = (function(rid, cr) { return () => renderStars(rid, cr); })(rexId, crit);
+    el.appendChild(s);
+  }
+}
+
+function previewStars(rexId, crit, hover) {
+  const el = document.getElementById('s-' + rexId + '-' + slugify(crit));
+  if (!el) return;
+  el.querySelectorAll('.star').forEach((s, i) => {
+    s.style.color = i < hover ? 'var(--rose)' : '#2a2a2a';
+  });
+}
+
+function setVote(rexId, crit, score) {
+  votes[rexId][crit] = score;
+  renderStars(rexId, crit);
+  updateCount(rexId);
+  updateProgress();
+  const cEl = document.getElementById('crit-' + rexId + '-' + slugify(crit));
+  if (cEl) cEl.classList.add('rated');
+}
+
+function updateCount(rexId) {
+  const n = CRITERES.filter(c => votes[rexId][c] > 0).length;
+  const el = document.getElementById('rc-' + rexId);
+  if (el) el.textContent = n + '/' + CRITERES.length;
+}
+
+function updateProgress() {
+  const total = REX_DATA.length * CRITERES.length;
+  let filled = 0;
+  REX_DATA.forEach(r => CRITERES.forEach(c => { if (votes[r.id][c] > 0) filled++; }));
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = filled + ' / ' + total + ' critères notés';
+}
+
+function toggleRex(id) { document.getElementById('rex-' + id).classList.toggle('open'); }
+
+/* ══ SUBMIT ══ */
+async function submitAll() {
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('submit-status');
+
+  let totalFilled = 0;
+  REX_DATA.forEach(r => CRITERES.forEach(c => { if (votes[r.id][c] > 0) totalFilled++; }));
+  if (totalFilled === 0) {
+    status.className = 'submit-status visible error';
+    status.textContent = '⚠ Veuillez noter au moins un critère avant de soumettre.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Envoi en cours…';
+  status.className = 'submit-status visible';
+  status.textContent = 'Transmission de vos réponses…';
+
+  const now = new Date().toISOString();
+  const payload = [];
+  REX_DATA.forEach(r => {
+    CRITERES.forEach(c => {
+      payload.push({
+        prenom: user.prenom,
+        nom: user.nom,
+        entreprise: user.entreprise,
+        date_soumission: now,
+        outil: r.titre,
+        critere: c,
+        note: votes[r.id][c] || 0
+      });
+    });
+  });
+
+  if (!supabaseConfigured) {
+    await new Promise(r => setTimeout(r, 1200));
+    btn.disabled = false;
+    btn.innerHTML = 'Envoyer mes réponses →';
+    status.className = 'submit-status visible error';
+    status.textContent = '⚠ Supabase non configuré. Voir la bannière de configuration ci-dessus.';
+    buildRecap();
+    showPage('page-success');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok || res.status === 201) {
+      buildRecap();
+      showPage('page-success');
+    } else {
+      const err = await res.text();
+      throw new Error(err);
+    }
+  } catch (e) {
+    btn.disabled = false;
+    btn.innerHTML = 'Réessayer →';
+    status.className = 'submit-status visible error';
+    status.textContent = '✗ Erreur lors de l\'envoi. Vérifiez la configuration Supabase. (' + e.message + ')';
+  }
+}
+
+function buildRecap() {
+  const rows = document.getElementById('recap-rows');
+  rows.innerHTML = '';
+  REX_DATA.forEach(r => {
+    const scores = CRITERES.map(c => votes[r.id][c] || 0);
+    const notated = scores.filter(s => s > 0);
+    const avg = notated.length ? (notated.reduce((a,b)=>a+b,0)/notated.length).toFixed(1) : '—';
+    const filled = notated.length ? Math.round(parseFloat(avg)) : 0;
+    const stars = '★'.repeat(filled) + '☆'.repeat(5-filled);
+    const row = document.createElement('div');
+    row.className = 'recap-row';
+    row.innerHTML = `<span class="recap-name">${r.titre}</span><span class="recap-stars">${stars}</span><span class="recap-avg">${avg}/5</span>`;
+    rows.appendChild(row);
+  });
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('page-login').classList.contains('active')) doLogin();
+});
+</script>
+
+<!-- ══════════════════════════════════════
+  INSTRUCTIONS DE CONFIGURATION (retirer après setup)
+══════════════════════════════════════ -->
+<!--
+POUR RECEVOIR LES RÉPONSES — SETUP SUPABASE (5 min, gratuit) :
+
+1. Créez un compte sur https://supabase.com
+2. Créez un nouveau projet
+3. Dans "SQL Editor", exécutez :
+
+CREATE TABLE evaluations_rex (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  prenom text,
+  nom text,
+  entreprise text,
+  date_soumission timestamptz,
+  outil text,
+  critere text,
+  note integer,
+  created_at timestamptz DEFAULT now()
+);
+
+4. Dans Project Settings → API :
+   - Copiez "Project URL" → remplace VOTRE_URL_SUPABASE
+   - Copiez "anon public key" → remplace VOTRE_CLE_ANON
+
+5. Activez RLS et créez une policy INSERT publique :
+ALTER TABLE evaluations_rex ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "allow_insert" ON evaluations_rex FOR INSERT WITH CHECK (true);
+
+6. Consultez les résultats dans l'onglet "Table Editor" de Supabase.
+   Vous pouvez exporter en CSV à tout moment depuis là.
+-->
+
+</body>
+</html>
