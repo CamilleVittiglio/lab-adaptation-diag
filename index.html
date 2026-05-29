@@ -9,26 +9,37 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --rose: #C8185A; --rose-light: #E01F68; --rose-dim: rgba(200,24,90,0.08); --rose-glow: rgba(200,24,90,0.15); --rose-border: rgba(200,24,90,0.25);
+  --rose: #C8185A; --rose-light: #E01F68; --rose-dim: rgba(200,24,90,0.08);
+  --rose-glow: rgba(200,24,90,0.15); --rose-border: rgba(200,24,90,0.25);
   --text: #1a1a1a; --text2: #555; --text3: #999;
   --bg: #f5f5f3; --surface: #ffffff; --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.06);
   --radius: 10px; --radius-lg: 16px;
 }
-html { scroll-behavior: smooth; }
 body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-.container { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+.container { max-width: 780px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
 .page { display: none; }
 .page.active { display: block; }
 
 /* HEADER */
-.site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
+.site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-logo { width: 42px; height: 42px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.brand-logo svg { width: 26px; height: 26px; }
 .brand-title { font-size: 15px; font-weight: 600; }
 .brand-sub { font-size: 11px; color: var(--rose); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 1px; }
 .user-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--text2); }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
+
+/* STEPPER */
+.stepper { display: flex; align-items: center; gap: 0; margin-bottom: 2.5rem; overflow-x: auto; padding-bottom: 4px; }
+.step-dot-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.step-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text3); transition: all 0.2s; }
+.step-dot.active { border-color: var(--rose); background: var(--rose); color: #fff; }
+.step-dot.done { border-color: #1a7f4b; background: #1a7f4b; color: #fff; font-size: 13px; }
+.step-label { font-size: 10px; color: var(--text3); text-align: center; max-width: 70px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.step-label.active { color: var(--rose); font-weight: 600; }
+.step-label.done { color: #1a7f4b; }
+.step-line { flex: 1; height: 2px; background: var(--border); margin: 0 4px; margin-bottom: 16px; min-width: 16px; transition: background 0.2s; }
+.step-line.done { background: #1a7f4b; }
 
 /* LOGIN */
 .login-wrap { max-width: 460px; margin: 2rem auto; }
@@ -37,6 +48,8 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .login-wrap h1 span { color: var(--rose); }
 .login-wrap > p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 2rem; }
 .login-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; }
+
+/* FIELDS */
 .field { margin-bottom: 1rem; }
 .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .field input, .field textarea { width: 100%; padding: 11px 14px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: inherit; color: var(--text); outline: none; transition: border 0.15s, box-shadow 0.15s; }
@@ -53,58 +66,39 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .btn-ghost { background: transparent; color: var(--text2); border: 0.5px solid var(--border); }
 .btn-ghost:hover { background: var(--bg); }
 .btn-full { width: 100%; justify-content: center; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* PROGRESS */
-.progress-section { margin-bottom: 2rem; }
-.progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 7px; }
-.progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--rose); border-radius: 2px; transition: width 0.4s ease; }
+/* TOOL PAGE */
+.tool-hero { margin-bottom: 2rem; }
+.tool-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--rose-dim); border: 0.5px solid var(--rose-border); border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 600; color: var(--rose); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 1rem; }
+.tool-hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+.tool-hero p { font-size: 14px; color: var(--text2); line-height: 1.7; }
 
-/* HERO */
-.hero { margin-bottom: 2rem; }
-.hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
-.hero p { font-size: 14px; color: var(--text2); line-height: 1.7; }
-
-/* REX CARDS */
-.rex-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 2rem; }
-.rex-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
-.rex-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-.rex-card.open { border-color: var(--rose-border); }
-.rex-header { display: flex; align-items: center; gap: 13px; padding: 16px 18px; cursor: pointer; user-select: none; }
-.rex-header:hover .rex-title { color: var(--rose); }
-.rex-num { width: 34px; height: 34px; border-radius: 9px; background: var(--rose-dim); border: 0.5px solid var(--rose-border); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--rose); flex-shrink: 0; }
-.rex-info { flex: 1; min-width: 0; }
-.rex-title { font-size: 14px; font-weight: 600; transition: color 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rex-subtitle { font-size: 12px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rex-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.rex-badge { font-size: 11px; color: var(--text3); white-space: nowrap; }
-.rex-chevron { font-size: 13px; color: var(--text3); transition: transform 0.25s; }
-.rex-card.open .rex-chevron { transform: rotate(180deg); color: var(--rose); }
-.rex-body { display: none; padding: 0 18px 20px; }
-.rex-card.open .rex-body { display: block; }
-.rex-divider { height: 0.5px; background: var(--border2); margin-bottom: 18px; }
-
-/* QUESTIONS */
-.question-block { margin-bottom: 20px; }
-.question-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
-.question-hint { font-size: 12px; color: var(--rose); margin-bottom: 12px; font-weight: 500; }
-.question-hint.warning { color: #c0392b; }
-.criteria-list { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+/* QUESTION BLOCKS */
+.question-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 14px; }
+.question-label { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
+.question-hint { font-size: 12px; color: var(--rose); margin-bottom: 14px; font-weight: 500; }
+.criteria-list { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 0; }
 @media (max-width: 540px) { .criteria-list { grid-template-columns: 1fr; } }
 .crit-item { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 10px 13px; cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none; }
 .crit-item:hover { background: #fff; border-color: var(--rose-border); }
 .crit-item.checked { background: var(--rose-dim); border-color: var(--rose); }
 .crit-item.checked .crit-name { color: var(--rose); font-weight: 600; }
-.crit-item.disabled { opacity: 0.4; cursor: not-allowed; }
-.crit-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
-.crit-item.checked .crit-checkbox { background: var(--rose); border-color: var(--rose); color: #fff; font-size: 11px; }
+.crit-item.disabled { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+.crit-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; font-size: 11px; color: #fff; }
+.crit-item.checked .crit-checkbox { background: var(--rose); border-color: var(--rose); }
 .crit-name { font-size: 13px; color: var(--text2); line-height: 1.4; }
+.comment-area { margin-top: 14px; border-top: 0.5px solid var(--border2); padding-top: 14px; }
+.comment-area label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+.comment-area textarea { width: 100%; padding: 10px 13px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--text); outline: none; resize: vertical; min-height: 80px; line-height: 1.6; transition: border 0.15s, box-shadow 0.15s; }
+.comment-area textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-glow); background: #fff; }
+.comment-area textarea::placeholder { color: #bbb; }
 
-/* SUBMIT */
-.submit-section { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.submit-info h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
-.submit-info p { font-size: 12px; color: var(--text2); }
-.submit-status { font-size: 13px; color: var(--text2); margin-top: 10px; width: 100%; display: none; }
+/* SUBMIT BAR */
+.submit-bar { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+.submit-bar-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.submit-bar-info p { font-size: 12px; color: var(--text2); }
+.submit-status { font-size: 13px; width: 100%; display: none; margin-top: 6px; }
 .submit-status.visible { display: block; }
 .submit-status.success { color: #1a7f4b; }
 .submit-status.error { color: #c0392b; }
@@ -114,12 +108,12 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .success-ring { width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--rose); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--rose); }
 .success-wrap h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
 .success-wrap > p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 2rem; }
-.recap-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem; text-align: left; }
-.recap-head { display: grid; grid-template-columns: 1fr; padding: 9px 16px; background: var(--rose-dim); border-bottom: 0.5px solid var(--rose-border); font-size: 11px; font-weight: 600; color: var(--rose); letter-spacing: 0.06em; text-transform: uppercase; }
-.recap-row { padding: 11px 16px; border-bottom: 0.5px solid var(--border2); font-size: 13px; }
-.recap-row:last-child { border-bottom: none; }
-.recap-tool { font-weight: 600; margin-bottom: 4px; }
-.recap-detail { color: var(--text2); font-size: 12px; line-height: 1.5; }
+
+/* FINAL SUCCESS */
+.final-wrap { max-width: 520px; margin: 4rem auto; text-align: center; }
+.final-icon { font-size: 52px; margin-bottom: 1.5rem; }
+.final-wrap h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+.final-wrap p { font-size: 14px; color: var(--text2); line-height: 1.7; }
 
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -128,30 +122,30 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 <body>
 <div class="container">
 
-  <!-- PAGE LOGIN -->
+  <!-- LOGO SVG réutilisable -->
+  <template id="logo-svg">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
+      <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
+      <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
+      <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
+      <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
+      <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
+      <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
+      <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="75" cy="28" r="6" fill="#C8185A"/>
+      <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
+      <circle cx="72" cy="70" r="6" fill="#C8185A"/>
+      <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
+    </svg>
+  </template>
+
+  <!-- ══ PAGE LOGIN ══ -->
   <div id="page-login" class="page active">
     <div class="site-header">
       <div class="brand">
-        <div class="brand-logo">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
-            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
-            <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
-            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
-            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
-            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
-            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
-            <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
-            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
-            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
-            <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
-          </svg>
-        </div>
-        <div>
-          <div class="brand-title">Lab Adaptation</div>
-          <div class="brand-sub">Diagnostic & Monitoring</div>
-        </div>
+        <div class="brand-logo" id="logo-login"></div>
+        <div><div class="brand-title">Lab Adaptation</div><div class="brand-sub">Diagnostic & Monitoring</div></div>
       </div>
     </div>
     <div class="login-wrap">
@@ -161,91 +155,29 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
       <div class="login-card">
         <div class="field"><label>Prénom</label><input id="inp-prenom" type="text" placeholder="Marie" autocomplete="given-name"></div>
         <div class="field"><label>Nom</label><input id="inp-nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
-        <div class="field"><label>Entreprise / Organisation</label><input id="inp-entreprise" type="text" placeholder="Collectivité, bureau d'études…" autocomplete="organization"></div>
+        <div class="field"><label>Entreprise / Organisation</label><input id="inp-entreprise" type="text" placeholder="Collectivité, bureau d'études…"></div>
         <div class="error-msg" id="login-error">Veuillez remplir tous les champs.</div>
         <button class="btn btn-rose btn-full" onclick="doLogin()">Commencer l'évaluation →</button>
       </div>
     </div>
   </div>
 
-  <!-- PAGE REX -->
-  <div id="page-rex" class="page">
-    <div class="site-header">
-      <div class="brand">
-        <div class="brand-logo">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
-            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
-            <ellipse cx="16" cy="58" rx="6" ry="10" fill="#C8185A"/>
-            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
-            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
-            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
-            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
-            <path d="M28 68 Q50 52 72 68" stroke="#C8185A" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
-            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
-            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
-            <rect x="70" y="62" width="4" height="14" fill="#C8185A"/>
-          </svg>
-        </div>
-        <div>
-          <div class="brand-title">Lab Adaptation</div>
-          <div class="brand-sub">Diagnostic & Monitoring</div>
-        </div>
-      </div>
-      <div class="user-pill"><div class="dot"></div><span id="user-label">—</span></div>
-    </div>
-    <div class="hero">
-      <h1>Évaluation des outils</h1>
-      <p>Dépliez chaque outil, répondez aux questions et soumettez vos réponses en bas de page.</p>
-    </div>
-    <div class="progress-section">
-      <div class="progress-meta"><span>Progression</span><span id="prog-label">0 / 5 outils</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
-    </div>
-    <div class="rex-list" id="rex-list"></div>
-    <div class="submit-section">
-      <div class="submit-info">
-        <h3>Soumettre mes évaluations</h3>
-        <p>Vos réponses seront envoyées directement à l'équipe du Lab Adaptation.</p>
-      </div>
-      <button class="btn btn-rose" id="submit-btn" onclick="submitAll()">Envoyer mes réponses →</button>
-      <div class="submit-status" id="submit-status"></div>
-    </div>
-  </div>
+  <!-- ══ PAGES OUTILS (générées dynamiquement) ══ -->
+  <div id="tool-pages"></div>
 
-  <!-- PAGE SUCCESS -->
-  <div id="page-success" class="page">
+  <!-- ══ PAGE FINALE ══ -->
+  <div id="page-final" class="page">
     <div class="site-header">
       <div class="brand">
-        <div class="brand-logo">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="48" stroke="#C8185A" stroke-width="3"/>
-            <ellipse cx="24" cy="62" rx="7" ry="11" fill="#C8185A"/>
-            <rect x="32" y="44" width="6" height="22" fill="#C8185A"/>
-            <rect x="41" y="36" width="6" height="30" fill="#C8185A"/>
-            <rect x="50" y="42" width="6" height="24" fill="#C8185A"/>
-            <rect x="59" y="38" width="6" height="28" fill="#C8185A"/>
-            <circle cx="75" cy="28" r="6" fill="#C8185A"/>
-            <rect x="68" y="40" width="8" height="28" rx="4" fill="#C8185A"/>
-            <circle cx="72" cy="70" r="6" fill="#C8185A"/>
-          </svg>
-        </div>
-        <div>
-          <div class="brand-title">Lab Adaptation</div>
-          <div class="brand-sub">Diagnostic & Monitoring</div>
-        </div>
+        <div class="brand-logo" id="logo-final"></div>
+        <div><div class="brand-title">Lab Adaptation</div><div class="brand-sub">Diagnostic & Monitoring</div></div>
       </div>
+      <div class="user-pill"><div class="dot"></div><span id="user-label-final">—</span></div>
     </div>
-    <div class="success-wrap">
-      <div class="success-ring">✓</div>
+    <div class="final-wrap">
+      <div class="final-icon">🎉</div>
       <h1>Merci pour votre contribution !</h1>
-      <p>Vos évaluations ont bien été transmises à l'équipe du Lab Adaptation.</p>
-      <div class="recap-card">
-        <div class="recap-head"><span>Récapitulatif de vos réponses</span></div>
-        <div id="recap-rows"></div>
-      </div>
-      <button class="btn btn-ghost" onclick="showPage('page-rex')">← Modifier mes réponses</button>
+      <p>Toutes vos évaluations ont bien été transmises à l'équipe du Lab Adaptation. Vos retours sont précieux pour notre recherche.</p>
     </div>
   </div>
 
@@ -256,11 +188,11 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const TABLE = 'evaluations_rex';
 
 const REX_DATA = [
-  { id:1, titre:"CSTB — PDNB",           desc:"Plan de Diagnostic National du Bâtiment · CSTB" },
-  { id:2, titre:"CSTB — SERENE",          desc:"Simulation énergétique et résilience · CSTB" },
-  { id:3, titre:"CEREMA — Côtes d'Armor", desc:"Outils mis en place dans le département Côtes d'Armor" },
-  { id:4, titre:"Azard",                   desc:"Plateforme de gestion des aléas et risques climatiques" },
-  { id:5, titre:"Geoya",                   desc:"Outil de géoanalyse territoriale pour l'adaptation" }
+  { id:1, titre:"BDNB — CSTB", desc:"Base nationale de données et de caractérisation du parc bâti français." },
+  { id:2, titre:"SEREINE — CSTB", desc:"Outil d'évaluation de la résilience des bâtiments face aux risques climatiques." },
+  { id:3, titre:"Cerema — REX Côtes-d'Armor", desc:"Retour d'expérience sur l'adaptation d'un territoire au changement climatique." },
+  { id:4, titre:"Geoya", desc:"Solution de diagnostic dédiée au secteur de l'assurance." },
+  { id:5, titre:"Azard", desc:"Outils d'analyse des risques climatiques à destination des cabinets de conseil et des entreprises." }
 ];
 
 const CRITERES = [
@@ -271,14 +203,22 @@ const CRITERES = [
   "Risques couverts","Horizon temporel"
 ];
 
-let user = {}, votes = {};
+let user = {};
+let votes = {};
+let currentStep = 0; // 0=login, 1-5=outils
 
-function initVotes() {
-  REX_DATA.forEach(r => {
-    votes[r.id] = { atouts: [], freins: [], remarques: '' };
-  });
+function sl(s){ return s.replace(/[^a-z0-9]/gi,'').toLowerCase().substring(0,14); }
+
+function logoSVG() {
+  const t = document.getElementById('logo-svg');
+  return t.content.cloneNode(true);
 }
 
+function initVotes() {
+  REX_DATA.forEach(r => { votes[r.id] = { atouts:[], freins:[], commentAtouts:'', commentFreins:'' }; });
+}
+
+/* ── LOGIN ── */
 function doLogin() {
   const p=document.getElementById('inp-prenom').value.trim();
   const n=document.getElementById('inp-nom').value.trim();
@@ -287,59 +227,107 @@ function doLogin() {
   document.getElementById('login-error').style.display='none';
   user={prenom:p,nom:n,entreprise:e};
   initVotes();
-  document.getElementById('user-label').textContent=p+' '+n;
-  buildRex();
-  showPage('page-rex');
+  buildToolPages();
+  goToTool(1);
 }
 
-function buildRex() {
-  const list=document.getElementById('rex-list');
-  list.innerHTML='';
-  REX_DATA.forEach(r=>{
-    const card=document.createElement('div');
-    card.className='rex-card'; card.id='rex-'+r.id;
-    card.innerHTML=`
-      <div class="rex-header" onclick="toggleRex(${r.id})">
-        <div class="rex-num">${r.id}</div>
-        <div class="rex-info">
-          <div class="rex-title">${r.titre}</div>
-          <div class="rex-subtitle">${r.desc}</div>
-        </div>
-        <div class="rex-meta">
-          <span class="rex-badge" id="rb-${r.id}">À évaluer</span>
-          <span class="rex-chevron">▼</span>
-        </div>
-      </div>
-      <div class="rex-body">
-        <div class="rex-divider"></div>
-
-        <div class="question-block">
-          <div class="question-label">Choisissez les 3 critères qui satisfont le plus vos attentes sur un outil de diagnostic</div>
-          <div class="question-hint" id="hint-atout-${r.id}">Sélectionnez exactement 3 critères</div>
-          <div class="criteria-list" id="atouts-${r.id}"></div>
-        </div>
-
-        <div class="question-block">
-          <div class="question-label">À l'inverse, quels sont les principaux freins quant à l'adoption de cet outil ?</div>
-          <div class="question-hint" id="hint-frein-${r.id}">Sélectionnez exactement 3 critères</div>
-          <div class="criteria-list" id="freins-${r.id}"></div>
-        </div>
-
-        <div class="question-block">
-          <div class="question-label">Justification / Remarques</div>
-          <div class="field" style="margin-bottom:0;">
-            <textarea id="remarques-${r.id}" placeholder="Partagez vos observations, retours d'expérience…" oninput="saveRemarques(${r.id})"></textarea>
-          </div>
-        </div>
-      </div>`;
-    list.appendChild(card);
+/* ── BUILD ALL TOOL PAGES ── */
+function buildToolPages() {
+  const container = document.getElementById('tool-pages');
+  container.innerHTML = '';
+  REX_DATA.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'page';
+    div.id = 'page-tool-'+r.id;
+    div.innerHTML = buildToolHTML(r);
+    container.appendChild(div);
+    // logo
+    const logoEl = div.querySelector('.brand-logo');
+    if(logoEl) logoEl.appendChild(logoSVG());
+    // checkboxes atouts
     buildCheckboxes(r.id, 'atouts');
     buildCheckboxes(r.id, 'freins');
   });
+  // logos statiques
+  document.getElementById('logo-login').appendChild(logoSVG());
+  document.getElementById('logo-final').appendChild(logoSVG());
 }
 
+function buildToolHTML(r) {
+  const isLast = r.id === REX_DATA.length;
+  return `
+    <div class="site-header">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <div><div class="brand-title">Lab Adaptation</div><div class="brand-sub">Diagnostic & Monitoring</div></div>
+      </div>
+      <div class="user-pill"><div class="dot"></div><span id="ul-${r.id}"></span></div>
+    </div>
+
+    <div id="stepper-${r.id}"></div>
+
+    <div class="tool-hero">
+      <div class="tool-eyebrow">Outil ${r.id} / ${REX_DATA.length}</div>
+      <h1>${r.titre}</h1>
+      <p>${r.desc}</p>
+    </div>
+
+    <div class="question-card">
+      <div class="question-label">Choisissez les 3 critères qui satisfont le plus vos attentes sur un outil de diagnostic</div>
+      <div class="question-hint" id="hint-atouts-${r.id}">Sélectionnez exactement 3 critères</div>
+      <div class="criteria-list" id="atouts-${r.id}"></div>
+      <div class="comment-area">
+        <label>Commentaires sur les points forts</label>
+        <textarea id="com-atouts-${r.id}" placeholder="Partagez vos observations sur les atouts de cet outil…" oninput="votes[${r.id}].commentAtouts=this.value"></textarea>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-label">À l'inverse, quels sont les principaux freins quant à l'adoption de cet outil ?</div>
+      <div class="question-hint" id="hint-freins-${r.id}">Sélectionnez exactement 3 critères</div>
+      <div class="criteria-list" id="freins-${r.id}"></div>
+      <div class="comment-area">
+        <label>Commentaires sur les freins</label>
+        <textarea id="com-freins-${r.id}" placeholder="Partagez vos observations sur les freins à l'adoption…" oninput="votes[${r.id}].commentFreins=this.value"></textarea>
+      </div>
+    </div>
+
+    <div class="submit-bar">
+      <div class="submit-bar-info">
+        <h3>${isLast ? 'Soumettre et terminer' : 'Soumettre et passer à l\'outil suivant'}</h3>
+        <p>${isLast ? 'Dernière évaluation — vos réponses seront envoyées.' : 'Vos réponses pour cet outil seront enregistrées.'}</p>
+      </div>
+      <button class="btn btn-rose" id="sbtn-${r.id}" onclick="submitTool(${r.id})">${isLast ? 'Terminer →' : 'Suivant →'}</button>
+      <div class="submit-status" id="sstatus-${r.id}"></div>
+    </div>`;
+}
+
+/* ── STEPPER ── */
+function buildStepper(containerId, currentId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let html = '<div class="stepper">';
+  REX_DATA.forEach((r, i) => {
+    const done = r.id < currentId;
+    const active = r.id === currentId;
+    const dotClass = done ? 'done' : active ? 'active' : '';
+    const labelClass = done ? 'done' : active ? 'active' : '';
+    html += `<div class="step-dot-wrap">
+      <div class="step-dot ${dotClass}">${done ? '✓' : r.id}</div>
+      <div class="step-label ${labelClass}">${r.titre.split('—')[0].trim()}</div>
+    </div>`;
+    if (i < REX_DATA.length - 1) {
+      html += `<div class="step-line ${done ? 'done' : ''}"></div>`;
+    }
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+/* ── CHECKBOXES ── */
 function buildCheckboxes(rid, type) {
   const container = document.getElementById(type+'-'+rid);
+  if (!container) return;
   CRITERES.forEach(c => {
     const div = document.createElement('div');
     div.className = 'crit-item';
@@ -353,15 +341,9 @@ function buildCheckboxes(rid, type) {
 function toggleCrit(rid, type, crit) {
   const arr = votes[rid][type];
   const idx = arr.indexOf(crit);
-  if (idx > -1) {
-    arr.splice(idx, 1);
-  } else {
-    if (arr.length >= 3) return;
-    arr.push(crit);
-  }
+  if (idx > -1) { arr.splice(idx, 1); }
+  else { if (arr.length >= 3) return; arr.push(crit); }
   updateCheckboxes(rid, type);
-  updateBadge(rid);
-  updateProgress();
 }
 
 function updateCheckboxes(rid, type) {
@@ -372,112 +354,86 @@ function updateCheckboxes(rid, type) {
     if (!item || !cb) return;
     const checked = arr.includes(c);
     const full = arr.length >= 3 && !checked;
-    item.className = 'crit-item' + (checked ? ' checked' : '') + (full ? ' disabled' : '');
+    item.className = 'crit-item'+(checked?' checked':'')+(full?' disabled':'');
     cb.textContent = checked ? '✓' : '';
   });
   const hint = document.getElementById('hint-'+type+'-'+rid);
   if (hint) {
-    if (arr.length === 3) {
-      hint.textContent = '✓ 3 critères sélectionnés';
-      hint.className = 'question-hint';
-    } else {
-      hint.textContent = `Sélectionnez ${3 - arr.length} critère(s) de plus`;
-      hint.className = 'question-hint' + (arr.length === 0 ? '' : '');
-    }
+    if (arr.length === 3) { hint.textContent = '✓ 3 critères sélectionnés'; hint.style.color = '#1a7f4b'; }
+    else { hint.textContent = `Sélectionnez ${3-arr.length} critère(s) de plus`; hint.style.color = 'var(--rose)'; }
   }
 }
 
-function saveRemarques(rid) {
-  votes[rid].remarques = document.getElementById('remarques-'+rid).value;
-  updateBadge(rid);
-}
-
-function updateBadge(rid) {
-  const v = votes[rid];
-  const done = v.atouts.length === 3 && v.freins.length === 3;
-  const el = document.getElementById('rb-'+rid);
-  if (el) {
-    el.textContent = done ? '✓ Complété' : (v.atouts.length + v.freins.length) + '/6';
-    el.style.color = done ? '#1a7f4b' : 'var(--text3)';
-  }
-}
-
-function updateProgress() {
-  const done = REX_DATA.filter(r => votes[r.id].atouts.length===3 && votes[r.id].freins.length===3).length;
-  document.getElementById('prog').style.width = Math.round(done/REX_DATA.length*100)+'%';
-  document.getElementById('prog-label').textContent = done+' / '+REX_DATA.length+' outils complétés';
-}
-
-function sl(s){ return s.replace(/[^a-z0-9]/gi,'').toLowerCase().substring(0,14); }
-function toggleRex(id){ document.getElementById('rex-'+id).classList.toggle('open'); }
-
-async function submitAll() {
-  const btn=document.getElementById('submit-btn');
-  const status=document.getElementById('submit-status');
-  const anyFilled = REX_DATA.some(r=>votes[r.id].atouts.length>0||votes[r.id].freins.length>0);
-  if(!anyFilled){
-    status.className='submit-status visible error';
-    status.textContent='⚠ Veuillez remplir au moins un outil avant de soumettre.';
-    return;
-  }
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner"></span> Envoi…';
-  status.className='submit-status visible';
-  status.textContent='Transmission en cours…';
-  const now=new Date().toISOString();
-  const payload=[];
-  REX_DATA.forEach(r=>{
-    payload.push({
-      prenom:user.prenom, nom:user.nom, entreprise:user.entreprise,
-      date_soumission:now, outil:r.titre,
-      critere:'ATOUTS', note:0,
-      atouts: votes[r.id].atouts.join(' | '),
-      freins: votes[r.id].freins.join(' | '),
-      remarques: votes[r.id].remarques
-    });
-  });
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`,{
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify(payload)
-    });
-    if(res.ok||res.status===201){ buildRecap(); showPage('page-success'); }
-    else{ throw new Error('HTTP '+res.status+' — '+await res.text()); }
-  }catch(e){
-    btn.disabled=false; btn.innerHTML='Réessayer →';
-    status.className='submit-status visible error';
-    status.textContent='✗ Erreur : '+e.message;
-  }
-}
-
-function buildRecap(){
-  const rows=document.getElementById('recap-rows');
-  rows.innerHTML='';
-  REX_DATA.forEach(r=>{
-    const v=votes[r.id];
-    if(v.atouts.length===0&&v.freins.length===0) return;
-    const div=document.createElement('div');
-    div.className='recap-row';
-    div.innerHTML=`
-      <div class="recap-tool">${r.titre}</div>
-      <div class="recap-detail">
-        <strong>Atouts :</strong> ${v.atouts.join(', ')||'—'}<br>
-        <strong>Freins :</strong> ${v.freins.join(', ')||'—'}
-        ${v.remarques?'<br><strong>Remarques :</strong> '+v.remarques:''}
-      </div>`;
-    rows.appendChild(div);
-  });
-}
-
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+/* ── NAVIGATION ── */
+function goToTool(id) {
+  showPage('page-tool-'+id);
+  currentStep = id;
+  const ul = document.getElementById('ul-'+id);
+  if (ul) ul.textContent = user.prenom+' '+user.nom;
+  buildStepper('stepper-'+id, id);
   window.scrollTo(0,0);
 }
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&document.getElementById('page-login').classList.contains('active')) doLogin();
+/* ── SUBMIT PAR OUTIL ── */
+async function submitTool(rid) {
+  const btn = document.getElementById('sbtn-'+rid);
+  const status = document.getElementById('sstatus-'+rid);
+  const v = votes[rid];
+
+  if (v.atouts.length === 0 && v.freins.length === 0) {
+    status.className = 'submit-status visible error';
+    status.textContent = '⚠ Veuillez sélectionner au moins un critère avant de continuer.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Envoi…';
+  status.className = 'submit-status visible';
+  status.textContent = 'Enregistrement…';
+
+  const payload = {
+    prenom: user.prenom, nom: user.nom, entreprise: user.entreprise,
+    date_soumission: new Date().toISOString(),
+    outil: REX_DATA[rid-1].titre,
+    critere: '—', note: 0,
+    atouts: v.atouts.join(' | '),
+    freins: v.freins.join(' | '),
+    remarques: [v.commentAtouts ? 'Atouts : '+v.commentAtouts : '', v.commentFreins ? 'Freins : '+v.commentFreins : ''].filter(Boolean).join(' / ')
+  };
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer '+SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok || res.status === 201) {
+      if (rid < REX_DATA.length) {
+        goToTool(rid + 1);
+      } else {
+        document.getElementById('user-label-final').textContent = user.prenom+' '+user.nom;
+        showPage('page-final');
+      }
+    } else {
+      throw new Error('HTTP '+res.status+' — '+await res.text());
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = rid < REX_DATA.length ? 'Suivant →' : 'Terminer →';
+    status.className = 'submit-status visible error';
+    status.textContent = '✗ Erreur : '+e.message;
+  }
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && document.getElementById('page-login').classList.contains('active')) doLogin();
 });
 </script>
 </body>
