@@ -9,25 +9,13 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --rose: #C8185A;
-  --rose-light: #E01F68;
-  --rose-dim: rgba(200,24,90,0.08);
-  --rose-glow: rgba(200,24,90,0.15);
-  --rose-border: rgba(200,24,90,0.25);
-  --black: #111111;
-  --text: #1a1a1a;
-  --text2: #555;
-  --text3: #999;
-  --bg: #f5f5f3;
-  --surface: #ffffff;
-  --border: rgba(0,0,0,0.1);
-  --border2: rgba(0,0,0,0.06);
-  --radius: 10px;
-  --radius-lg: 16px;
+  --rose: #C8185A; --rose-light: #E01F68; --rose-dim: rgba(200,24,90,0.08); --rose-glow: rgba(200,24,90,0.15); --rose-border: rgba(200,24,90,0.25);
+  --text: #1a1a1a; --text2: #555; --text3: #999;
+  --bg: #f5f5f3; --surface: #ffffff; --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.06);
+  --radius: 10px; --radius-lg: 16px;
 }
 html { scroll-behavior: smooth; }
 body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
 .container { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
 .page { display: none; }
 .page.active { display: block; }
@@ -35,9 +23,9 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 /* HEADER */
 .site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
 .brand { display: flex; align-items: center; gap: 12px; }
-.brand-logo { width: 42px; height: 42px; border-radius: 50%; background: var(--black); border: 1.5px solid var(--black); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.brand-logo { width: 42px; height: 42px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .brand-logo svg { width: 26px; height: 26px; }
-.brand-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.brand-title { font-size: 15px; font-weight: 600; }
 .brand-sub { font-size: 11px; color: var(--rose); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 1px; }
 .user-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--text2); }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
@@ -51,9 +39,10 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .login-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; }
 .field { margin-bottom: 1rem; }
 .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
-.field input { width: 100%; padding: 11px 14px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: inherit; color: var(--text); outline: none; transition: border 0.15s, box-shadow 0.15s; }
-.field input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-glow); background: #fff; }
-.field input::placeholder { color: #bbb; }
+.field input, .field textarea { width: 100%; padding: 11px 14px; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: inherit; color: var(--text); outline: none; transition: border 0.15s, box-shadow 0.15s; }
+.field input:focus, .field textarea:focus { border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-glow); background: #fff; }
+.field input::placeholder, .field textarea::placeholder { color: #bbb; }
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .error-msg { color: #c0392b; font-size: 13px; margin-bottom: 10px; display: none; }
 
 /* BUTTONS */
@@ -88,23 +77,28 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .rex-title { font-size: 14px; font-weight: 600; transition: color 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rex-subtitle { font-size: 12px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rex-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.rex-count { font-size: 11px; color: var(--text3); }
+.rex-badge { font-size: 11px; color: var(--text3); white-space: nowrap; }
 .rex-chevron { font-size: 13px; color: var(--text3); transition: transform 0.25s; }
 .rex-card.open .rex-chevron { transform: rotate(180deg); color: var(--rose); }
-.rex-body { display: none; padding: 0 18px 18px; }
+.rex-body { display: none; padding: 0 18px 20px; }
 .rex-card.open .rex-body { display: block; }
-.rex-divider { height: 0.5px; background: var(--border2); margin-bottom: 16px; }
+.rex-divider { height: 0.5px; background: var(--border2); margin-bottom: 18px; }
 
-/* CRITERIA */
-.criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-@media (max-width: 540px) { .criteria-grid { grid-template-columns: 1fr; } }
-.criterion { background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 11px 13px; transition: border-color 0.1s; }
-.criterion.rated { border-color: var(--rose-border); }
-.criterion-name { font-size: 12px; color: var(--text2); margin-bottom: 8px; line-height: 1.4; font-weight: 500; }
-.stars { display: flex; gap: 3px; }
-.star { font-size: 20px; cursor: pointer; color: #ddd; transition: color 0.1s, transform 0.1s; line-height: 1; }
-.star.active { color: var(--rose); }
-.star:hover { transform: scale(1.2); }
+/* QUESTIONS */
+.question-block { margin-bottom: 20px; }
+.question-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
+.question-hint { font-size: 12px; color: var(--rose); margin-bottom: 12px; font-weight: 500; }
+.question-hint.warning { color: #c0392b; }
+.criteria-list { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+@media (max-width: 540px) { .criteria-list { grid-template-columns: 1fr; } }
+.crit-item { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 10px 13px; cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none; }
+.crit-item:hover { background: #fff; border-color: var(--rose-border); }
+.crit-item.checked { background: var(--rose-dim); border-color: var(--rose); }
+.crit-item.checked .crit-name { color: var(--rose); font-weight: 600; }
+.crit-item.disabled { opacity: 0.4; cursor: not-allowed; }
+.crit-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+.crit-item.checked .crit-checkbox { background: var(--rose); border-color: var(--rose); color: #fff; font-size: 11px; }
+.crit-name { font-size: 13px; color: var(--text2); line-height: 1.4; }
 
 /* SUBMIT */
 .submit-section { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -121,19 +115,17 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
 .success-wrap h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
 .success-wrap > p { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 2rem; }
 .recap-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem; text-align: left; }
-.recap-head { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 9px 16px; background: var(--rose-dim); border-bottom: 0.5px solid var(--rose-border); font-size: 11px; font-weight: 600; color: var(--rose); letter-spacing: 0.06em; text-transform: uppercase; }
-.recap-row { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 11px 16px; border-bottom: 0.5px solid var(--border2); align-items: center; font-size: 13px; }
+.recap-head { display: grid; grid-template-columns: 1fr; padding: 9px 16px; background: var(--rose-dim); border-bottom: 0.5px solid var(--rose-border); font-size: 11px; font-weight: 600; color: var(--rose); letter-spacing: 0.06em; text-transform: uppercase; }
+.recap-row { padding: 11px 16px; border-bottom: 0.5px solid var(--border2); font-size: 13px; }
 .recap-row:last-child { border-bottom: none; }
-.recap-name { font-weight: 500; }
-.recap-stars { color: var(--rose); letter-spacing: 1px; }
-.recap-avg { color: var(--text3); font-weight: 600; }
+.recap-tool { font-weight: 600; margin-bottom: 4px; }
+.recap-detail { color: var(--text2); font-size: 12px; line-height: 1.5; }
 
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-
 <div class="container">
 
   <!-- PAGE LOGIN -->
@@ -165,7 +157,7 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
     <div class="login-wrap">
       <div class="login-eyebrow">Évaluation des outils</div>
       <h1>Donnez votre<br><span>retour d'expérience</span></h1>
-      <p>Évaluez 5 outils d'adaptation urbaine selon 15 critères. Vos réponses sont transmises directement à notre équipe.</p>
+      <p>Évaluez 5 outils d'adaptation urbaine. Vos réponses sont transmises directement à notre équipe.</p>
       <div class="login-card">
         <div class="field"><label>Prénom</label><input id="inp-prenom" type="text" placeholder="Marie" autocomplete="given-name"></div>
         <div class="field"><label>Nom</label><input id="inp-nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
@@ -205,10 +197,10 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
     </div>
     <div class="hero">
       <h1>Évaluation des outils</h1>
-      <p>Dépliez chaque outil et notez-le sur les 15 critères. Soumettez vos réponses en bas de page.</p>
+      <p>Dépliez chaque outil, répondez aux questions et soumettez vos réponses en bas de page.</p>
     </div>
     <div class="progress-section">
-      <div class="progress-meta"><span>Progression</span><span id="prog-label">0 / 75 critères</span></div>
+      <div class="progress-meta"><span>Progression</span><span id="prog-label">0 / 5 outils</span></div>
       <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
     </div>
     <div class="rex-list" id="rex-list"></div>
@@ -248,9 +240,9 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
     <div class="success-wrap">
       <div class="success-ring">✓</div>
       <h1>Merci pour votre contribution !</h1>
-      <p>Vos évaluations ont bien été transmises à l'équipe du Lab Adaptation. Voici votre récapitulatif :</p>
+      <p>Vos évaluations ont bien été transmises à l'équipe du Lab Adaptation.</p>
       <div class="recap-card">
-        <div class="recap-head"><span>Outil</span><span>Note</span><span>Moy.</span></div>
+        <div class="recap-head"><span>Récapitulatif de vos réponses</span></div>
         <div id="recap-rows"></div>
       </div>
       <button class="btn btn-ghost" onclick="showPage('page-rex')">← Modifier mes réponses</button>
@@ -258,18 +250,11 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
   </div>
 
 </div>
-
 <script>
-/* ══════════════════════════════
-   ⚙️ CONFIGURATION SUPABASE
-   Remplacez les deux lignes ci-dessous
-   par vos vraies valeurs Supabase
-══════════════════════════════ */
 const SUPABASE_URL = 'https://ivzybslekwrkqoosyzuc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2enlic2xla3dya3Fvb3N5enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDgwMjQsImV4cCI6MjA5NTU4NDAyNH0.DQWvD-xckQVJ2h-RcOVnqTBbn6eKh-plox3gFxkr7-U';
 const TABLE = 'evaluations_rex';
 
-/* ══ DONNÉES ══ */
 const REX_DATA = [
   { id:1, titre:"CSTB — PDNB",           desc:"Plan de Diagnostic National du Bâtiment · CSTB" },
   { id:2, titre:"CSTB — SERENE",          desc:"Simulation énergétique et résilience · CSTB" },
@@ -277,6 +262,7 @@ const REX_DATA = [
   { id:4, titre:"Azard",                   desc:"Plateforme de gestion des aléas et risques climatiques" },
   { id:5, titre:"Geoya",                   desc:"Outil de géoanalyse territoriale pour l'adaptation" }
 ];
+
 const CRITERES = [
   "Niveau d'analyse","Hiérarchisation des risques, indicateurs","Livrable",
   "Objectif : conformité, aide à la décision…","Coût","Donnée utilisée",
@@ -288,29 +274,31 @@ const CRITERES = [
 let user = {}, votes = {};
 
 function initVotes() {
-  REX_DATA.forEach(r => { votes[r.id] = {}; CRITERES.forEach(c => { votes[r.id][c] = 0; }); });
+  REX_DATA.forEach(r => {
+    votes[r.id] = { atouts: [], freins: [], remarques: '' };
+  });
 }
 
 function doLogin() {
-  const p = document.getElementById('inp-prenom').value.trim();
-  const n = document.getElementById('inp-nom').value.trim();
-  const e = document.getElementById('inp-entreprise').value.trim();
-  if (!p||!n||!e) { document.getElementById('login-error').style.display='block'; return; }
-  document.getElementById('login-error').style.display = 'none';
-  user = { prenom:p, nom:n, entreprise:e };
+  const p=document.getElementById('inp-prenom').value.trim();
+  const n=document.getElementById('inp-nom').value.trim();
+  const e=document.getElementById('inp-entreprise').value.trim();
+  if(!p||!n||!e){document.getElementById('login-error').style.display='block';return;}
+  document.getElementById('login-error').style.display='none';
+  user={prenom:p,nom:n,entreprise:e};
   initVotes();
-  document.getElementById('user-label').textContent = p+' '+n;
+  document.getElementById('user-label').textContent=p+' '+n;
   buildRex();
   showPage('page-rex');
 }
 
 function buildRex() {
-  const list = document.getElementById('rex-list');
-  list.innerHTML = '';
-  REX_DATA.forEach(r => {
-    const card = document.createElement('div');
-    card.className = 'rex-card'; card.id = 'rex-'+r.id;
-    card.innerHTML = `
+  const list=document.getElementById('rex-list');
+  list.innerHTML='';
+  REX_DATA.forEach(r=>{
+    const card=document.createElement('div');
+    card.className='rex-card'; card.id='rex-'+r.id;
+    card.innerHTML=`
       <div class="rex-header" onclick="toggleRex(${r.id})">
         <div class="rex-num">${r.id}</div>
         <div class="rex-info">
@@ -318,111 +306,145 @@ function buildRex() {
           <div class="rex-subtitle">${r.desc}</div>
         </div>
         <div class="rex-meta">
-          <span class="rex-count" id="rc-${r.id}">0/${CRITERES.length}</span>
+          <span class="rex-badge" id="rb-${r.id}">À évaluer</span>
           <span class="rex-chevron">▼</span>
         </div>
       </div>
       <div class="rex-body">
         <div class="rex-divider"></div>
-        <div class="criteria-grid" id="cg-${r.id}"></div>
+
+        <div class="question-block">
+          <div class="question-label">Choisissez les 3 critères qui satisfont le plus vos attentes sur un outil de diagnostic</div>
+          <div class="question-hint" id="hint-atout-${r.id}">Sélectionnez exactement 3 critères</div>
+          <div class="criteria-list" id="atouts-${r.id}"></div>
+        </div>
+
+        <div class="question-block">
+          <div class="question-label">À l'inverse, quels sont les principaux freins quant à l'adoption de cet outil ?</div>
+          <div class="question-hint" id="hint-frein-${r.id}">Sélectionnez exactement 3 critères</div>
+          <div class="criteria-list" id="freins-${r.id}"></div>
+        </div>
+
+        <div class="question-block">
+          <div class="question-label">Justification / Remarques</div>
+          <div class="field" style="margin-bottom:0;">
+            <textarea id="remarques-${r.id}" placeholder="Partagez vos observations, retours d'expérience…" oninput="saveRemarques(${r.id})"></textarea>
+          </div>
+        </div>
       </div>`;
     list.appendChild(card);
-    const grid = document.getElementById('cg-'+r.id);
-    CRITERES.forEach(c => {
-      const div = document.createElement('div');
-      div.className = 'criterion'; div.id = 'crit-'+r.id+'-'+sl(c);
-      div.innerHTML = `<div class="criterion-name">${c}</div><div class="stars" id="s-${r.id}-${sl(c)}"></div>`;
-      grid.appendChild(div);
-      renderStars(r.id, c);
-    });
-    updateCount(r.id);
+    buildCheckboxes(r.id, 'atouts');
+    buildCheckboxes(r.id, 'freins');
   });
 }
 
-function sl(s){ return s.replace(/[^a-z0-9]/gi,'').toLowerCase().substring(0,14); }
+function buildCheckboxes(rid, type) {
+  const container = document.getElementById(type+'-'+rid);
+  CRITERES.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'crit-item';
+    div.id = type+'-item-'+rid+'-'+sl(c);
+    div.innerHTML = `<div class="crit-checkbox" id="${type}-cb-${rid}-${sl(c)}"></div><span class="crit-name">${c}</span>`;
+    div.onclick = () => toggleCrit(rid, type, c);
+    container.appendChild(div);
+  });
+}
 
-function renderStars(rid, crit) {
-  const el = document.getElementById('s-'+rid+'-'+sl(crit));
-  if (!el) return;
-  el.innerHTML = '';
-  const val = votes[rid][crit]||0;
-  for (let i=1;i<=5;i++) {
-    const s = document.createElement('span');
-    s.className = 'star'+(i<=val?' active':'');
-    s.textContent = '★';
-    s.style.color = i<=val ? 'var(--rose)' : '#ddd';
-    s.onclick = (function(r,c,sc){return()=>setVote(r,c,sc);})(rid,crit,i);
-    s.onmouseenter = (function(r,c,sc){return()=>previewStars(r,c,sc);})(rid,crit,i);
-    s.onmouseleave = (function(r,c){return()=>renderStars(r,c);})(rid,crit);
-    el.appendChild(s);
+function toggleCrit(rid, type, crit) {
+  const arr = votes[rid][type];
+  const idx = arr.indexOf(crit);
+  if (idx > -1) {
+    arr.splice(idx, 1);
+  } else {
+    if (arr.length >= 3) return;
+    arr.push(crit);
+  }
+  updateCheckboxes(rid, type);
+  updateBadge(rid);
+  updateProgress();
+}
+
+function updateCheckboxes(rid, type) {
+  const arr = votes[rid][type];
+  CRITERES.forEach(c => {
+    const item = document.getElementById(type+'-item-'+rid+'-'+sl(c));
+    const cb = document.getElementById(type+'-cb-'+rid+'-'+sl(c));
+    if (!item || !cb) return;
+    const checked = arr.includes(c);
+    const full = arr.length >= 3 && !checked;
+    item.className = 'crit-item' + (checked ? ' checked' : '') + (full ? ' disabled' : '');
+    cb.textContent = checked ? '✓' : '';
+  });
+  const hint = document.getElementById('hint-'+type+'-'+rid);
+  if (hint) {
+    if (arr.length === 3) {
+      hint.textContent = '✓ 3 critères sélectionnés';
+      hint.className = 'question-hint';
+    } else {
+      hint.textContent = `Sélectionnez ${3 - arr.length} critère(s) de plus`;
+      hint.className = 'question-hint' + (arr.length === 0 ? '' : '');
+    }
   }
 }
 
-function previewStars(rid,crit,hover){
-  const el=document.getElementById('s-'+rid+'-'+sl(crit));
-  if(!el)return;
-  el.querySelectorAll('.star').forEach((s,i)=>{ s.style.color=i<hover?'var(--rose)':'#ddd'; });
+function saveRemarques(rid) {
+  votes[rid].remarques = document.getElementById('remarques-'+rid).value;
+  updateBadge(rid);
 }
 
-function setVote(rid,crit,score){
-  votes[rid][crit]=score; renderStars(rid,crit); updateCount(rid); updateProgress();
-  const el=document.getElementById('crit-'+rid+'-'+sl(crit));
-  if(el) el.classList.add('rated');
+function updateBadge(rid) {
+  const v = votes[rid];
+  const done = v.atouts.length === 3 && v.freins.length === 3;
+  const el = document.getElementById('rb-'+rid);
+  if (el) {
+    el.textContent = done ? '✓ Complété' : (v.atouts.length + v.freins.length) + '/6';
+    el.style.color = done ? '#1a7f4b' : 'var(--text3)';
+  }
 }
 
-function updateCount(rid){
-  const n=CRITERES.filter(c=>votes[rid][c]>0).length;
-  const el=document.getElementById('rc-'+rid);
-  if(el) el.textContent=n+'/'+CRITERES.length;
+function updateProgress() {
+  const done = REX_DATA.filter(r => votes[r.id].atouts.length===3 && votes[r.id].freins.length===3).length;
+  document.getElementById('prog').style.width = Math.round(done/REX_DATA.length*100)+'%';
+  document.getElementById('prog-label').textContent = done+' / '+REX_DATA.length+' outils complétés';
 }
 
-function updateProgress(){
-  const total=REX_DATA.length*CRITERES.length;
-  let filled=0;
-  REX_DATA.forEach(r=>CRITERES.forEach(c=>{ if(votes[r.id][c]>0) filled++; }));
-  document.getElementById('prog').style.width=Math.round(filled/total*100)+'%';
-  document.getElementById('prog-label').textContent=filled+' / '+total+' critères';
-}
-
+function sl(s){ return s.replace(/[^a-z0-9]/gi,'').toLowerCase().substring(0,14); }
 function toggleRex(id){ document.getElementById('rex-'+id).classList.toggle('open'); }
 
-async function submitAll(){
+async function submitAll() {
   const btn=document.getElementById('submit-btn');
   const status=document.getElementById('submit-status');
-  let filled=0;
-  REX_DATA.forEach(r=>CRITERES.forEach(c=>{ if(votes[r.id][c]>0) filled++; }));
-  if(filled===0){
+  const anyFilled = REX_DATA.some(r=>votes[r.id].atouts.length>0||votes[r.id].freins.length>0);
+  if(!anyFilled){
     status.className='submit-status visible error';
-    status.textContent='⚠ Veuillez noter au moins un critère avant de soumettre.';
+    status.textContent='⚠ Veuillez remplir au moins un outil avant de soumettre.';
     return;
   }
   btn.disabled=true;
   btn.innerHTML='<span class="spinner"></span> Envoi…';
   status.className='submit-status visible';
   status.textContent='Transmission en cours…';
-
   const now=new Date().toISOString();
   const payload=[];
-  REX_DATA.forEach(r=>{ CRITERES.forEach(c=>{ payload.push({ prenom:user.prenom, nom:user.nom, entreprise:user.entreprise, date_soumission:now, outil:r.titre, critere:c, note:votes[r.id][c]||0 }); }); });
-
-  if(SUPABASE_URL==='JAMAIS'){
-    await new Promise(r=>setTimeout(r,800));
-    btn.disabled=false; btn.innerHTML='Envoyer mes réponses →';
-    status.className='submit-status visible error';
-    status.textContent='⚠ Supabase non configuré — voir les instructions de setup.';
-    buildRecap(); showPage('page-success');
-    return;
-  }
-
+  REX_DATA.forEach(r=>{
+    payload.push({
+      prenom:user.prenom, nom:user.nom, entreprise:user.entreprise,
+      date_soumission:now, outil:r.titre,
+      critere:'ATOUTS', note:0,
+      atouts: votes[r.id].atouts.join(' | '),
+      freins: votes[r.id].freins.join(' | '),
+      remarques: votes[r.id].remarques
+    });
+  });
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`,{
       method:'POST',
-      headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY, 'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify(payload)
     });
     if(res.ok||res.status===201){ buildRecap(); showPage('page-success'); }
-    else { throw new Error('HTTP '+res.status); }
-  } catch(e){
+    else{ throw new Error('HTTP '+res.status+' — '+await res.text()); }
+  }catch(e){
     btn.disabled=false; btn.innerHTML='Réessayer →';
     status.className='submit-status visible error';
     status.textContent='✗ Erreur : '+e.message;
@@ -433,13 +455,17 @@ function buildRecap(){
   const rows=document.getElementById('recap-rows');
   rows.innerHTML='';
   REX_DATA.forEach(r=>{
-    const scores=CRITERES.map(c=>votes[r.id][c]||0);
-    const noted=scores.filter(s=>s>0);
-    const avg=noted.length?(noted.reduce((a,b)=>a+b,0)/noted.length).toFixed(1):'—';
-    const f=noted.length?Math.round(parseFloat(avg)):0;
+    const v=votes[r.id];
+    if(v.atouts.length===0&&v.freins.length===0) return;
     const div=document.createElement('div');
     div.className='recap-row';
-    div.innerHTML=`<span class="recap-name">${r.titre}</span><span class="recap-stars">${'★'.repeat(f)+'☆'.repeat(5-f)}</span><span class="recap-avg">${avg}/5</span>`;
+    div.innerHTML=`
+      <div class="recap-tool">${r.titre}</div>
+      <div class="recap-detail">
+        <strong>Atouts :</strong> ${v.atouts.join(', ')||'—'}<br>
+        <strong>Freins :</strong> ${v.freins.join(', ')||'—'}
+        ${v.remarques?'<br><strong>Remarques :</strong> '+v.remarques:''}
+      </div>`;
     rows.appendChild(div);
   });
 }
@@ -450,37 +476,9 @@ function showPage(id){
   window.scrollTo(0,0);
 }
 
-document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&document.getElementById('page-login').classList.contains('active')) doLogin(); });
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('page-login').classList.contains('active')) doLogin();
+});
 </script>
-
-<!--
-════════════════════════════════════════
-SETUP SUPABASE — POUR RECEVOIR LES RÉPONSES
-════════════════════════════════════════
-
-1. Créez un compte gratuit sur https://supabase.com
-2. Nouveau projet → notez votre mot de passe
-
-3. Dans "SQL Editor", collez et exécutez :
-
-CREATE TABLE evaluations_rex (
-  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-  prenom text, nom text, entreprise text,
-  date_soumission timestamptz,
-  outil text, critere text, note integer,
-  created_at timestamptz DEFAULT now()
-);
-ALTER TABLE evaluations_rex ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "allow_insert" ON evaluations_rex FOR INSERT WITH CHECK (true);
-CREATE POLICY "allow_select" ON evaluations_rex FOR SELECT USING (true);
-
-4. Project Settings → API :
-   → Copiez "Project URL"  → remplace https://ivzybslekwrkqoosyzuc.supabase.co
-   → Copiez "anon public"  → remplace eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2enlic2xla3dya3Fvb3N5enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDgwMjQsImV4cCI6MjA5NTU4NDAyNH0.DQWvD-xckQVJ2h-RcOVnqTBbn6eKh-plox3gFxkr7-U
-
-5. Les réponses arrivent dans Table Editor → evaluations_rex
-   Bouton "Export" → CSV pour tout récupérer dans Excel
-════════════════════════════════════════
--->
 </body>
 </html>
