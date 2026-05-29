@@ -308,7 +308,7 @@ body {
     </div>
 
     <div class="config-banner" id="config-banner">
-      <strong>⚙️ Configuration requise :</strong> Pour recevoir les réponses, remplacez <strong>VOTRE_URL_SUPABASE</strong> et <strong>VOTRE_CLE_ANON</strong> dans le code HTML par vos identifiants Supabase. Voir les instructions en bas de page.
+      <strong>⚙️ Configuration requise :</strong> Pour recevoir les réponses, remplacez <strong>https://ivzybslekwrkqoosyzuc.supabase.co</strong> et <strong>sb_publishable_pepc9YOAsdxepOYERCdWww_iXule-6-</strong> dans le code HTML par vos identifiants Supabase. Voir les instructions en bas de page.
     </div>
 
     <div class="hero">
@@ -380,8 +380,8 @@ body {
 /* ══════════════════════════════════════
    CONFIG SUPABASE — À PERSONNALISER
 ══════════════════════════════════════ */
-const SUPABASE_URL = 'VOTRE_URL_SUPABASE';   // ex: https://xxxxxx.supabase.co
-const SUPABASE_KEY = 'VOTRE_CLE_ANON';       // clé anon publique
+const SUPABASE_URL = 'https://ivzybslekwrkqoosyzuc.supabase.co';   // ex: https://xxxxxx.supabase.co
+const SUPABASE_KEY = 'sb_publishable_pepc9YOAsdxepOYERCdWww_iXule-6-';       // clé anon publique
 const TABLE_NAME   = 'evaluations_rex';       // nom de la table à créer
 
 /* ══════════════════════════════════════
@@ -419,7 +419,7 @@ let supabaseConfigured = false;
 
 /* ══ INIT ══ */
 function checkConfig() {
-  supabaseConfigured = SUPABASE_URL !== 'VOTRE_URL_SUPABASE' && SUPABASE_KEY !== 'VOTRE_CLE_ANON';
+  supabaseConfigured = SUPABASE_URL !== 'https://ivzybslekwrkqoosyzuc.supabase.co' && SUPABASE_KEY !== 'sb_publishable_pepc9YOAsdxepOYERCdWww_iXule-6-';
   return supabaseConfigured;
 }
 
@@ -659,8 +659,8 @@ CREATE TABLE evaluations_rex (
 );
 
 4. Dans Project Settings → API :
-   - Copiez "Project URL" → remplace VOTRE_URL_SUPABASE
-   - Copiez "anon public key" → remplace VOTRE_CLE_ANON
+   - Copiez "Project URL" → remplace https://ivzybslekwrkqoosyzuc.supabase.co
+   - Copiez "anon public key" → remplace sb_publishable_pepc9YOAsdxepOYERCdWww_iXule-6-
 
 5. Activez RLS et créez une policy INSERT publique :
 ALTER TABLE evaluations_rex ENABLE ROW LEVEL SECURITY;
