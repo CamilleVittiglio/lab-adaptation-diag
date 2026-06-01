@@ -224,16 +224,12 @@ function buildToolPages() {
     div.id = 'page-tool-'+r.id;
     div.innerHTML = buildToolHTML(r);
     container.appendChild(div);
-    // logo
-    const logoEl = div.querySelector('.brand-logo');
-    
     // checkboxes atouts
     buildCheckboxes(r.id, 'atouts');
     buildCheckboxes(r.id, 'freins');
   });
-  // logos statiques
-  
-  
+  // inject logos into all brand-logo divs
+  injectLogos();
 }
 
 function buildToolHTML(r) {
