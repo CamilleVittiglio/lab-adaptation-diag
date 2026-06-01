@@ -150,8 +150,8 @@ body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: v
     </div>
     <div class="login-wrap">
       <div class="login-eyebrow">Évaluation des outils</div>
-      <h1>Donnez votre<br><span>retour d'expérience</span></h1>
-      <p>Évaluez 5 outils d'adaptation urbaine. Vos réponses sont transmises directement à notre équipe.</p>
+      <h1>Donnez votre<br><span>avis</span></h1>
+      <p>Évaluez 5 démarches/outils de diagnostic. Nous récupérerons ensuite les retours.</p>
       <div class="login-card">
         <div class="field"><label>Prénom</label><input id="inp-prenom" type="text" placeholder="Marie" autocomplete="given-name"></div>
         <div class="field"><label>Nom</label><input id="inp-nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
@@ -188,11 +188,11 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const TABLE = 'evaluations_rex';
 
 const REX_DATA = [
-  { id:1, titre:"BDNB — CSTB", desc:"Base nationale de données et de caractérisation du parc bâti français." },
-  { id:2, titre:"SEREINE — CSTB", desc:"Outil d'évaluation de la résilience des bâtiments face aux risques climatiques." },
-  { id:3, titre:"Cerema — REX Côtes-d'Armor", desc:"Retour d'expérience sur l'adaptation d'un territoire au changement climatique." },
-  { id:4, titre:"Geoya", desc:"Solution de diagnostic dédiée au secteur de l'assurance." },
-  { id:5, titre:"Azard", desc:"Outils d'analyse des risques climatiques à destination des cabinets de conseil et des entreprises." }
+  { id:1, titre:"CSTB — BDnB Gorénove", desc:"Base nationale de données et de caractérisation du parc bâti français." },
+  { id:2, titre:"CSTB — Rénoptim", desc:"Outil d'évaluation de la résilience des bâtiments face aux risques climatiques." },
+  { id:3, titre:"CEREMA — REX Côtes-d'Armor", desc:"Retour d'expérience sur l'adaptation d'un territoire au changement climatique." },
+  { id:4, titre:"Azard", desc:"Outils d'analyse des risques climatiques à destination des cabinets de conseil et des entreprises." },
+  { id:5, titre:"Geoya", desc:"Solution de diagnostic dédiée au secteur de l'assurance." }
 ];
 
 const CRITERES = [
@@ -273,7 +273,7 @@ function buildToolHTML(r) {
     </div>
 
     <div class="question-card">
-      <div class="question-label">Choisissez les 3 critères qui satisfont le plus vos attentes sur un outil de diagnostic</div>
+      <div class="question-label">Choisissez les 3 atouts / forces / avantages qui satisfont le plus vos attentes</div>
       <div class="question-hint" id="hint-atouts-${r.id}">Sélectionnez exactement 3 critères</div>
       <div class="criteria-list" id="atouts-${r.id}"></div>
       <div class="comment-area">
@@ -283,7 +283,7 @@ function buildToolHTML(r) {
     </div>
 
     <div class="question-card">
-      <div class="question-label">À l'inverse, quels sont les principaux freins quant à l'adoption de cet outil ?</div>
+      <div class="question-label">Quels sont les 3 points qui manquent de clarté / méritent d'être renforcés ?</div>
       <div class="question-hint" id="hint-freins-${r.id}">Sélectionnez exactement 3 critères</div>
       <div class="criteria-list" id="freins-${r.id}"></div>
       <div class="comment-area">
